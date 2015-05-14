@@ -12,7 +12,7 @@ RUN apk add --update curl make gcc g++ python paxctl libgcc libstdc++ && \
   make install && \
   paxctl -cm /usr/bin/node && \
   cd / && \
-  apk del curl make gcc g++ python paxctl && \
+  apk del make gcc g++ python paxctl && \
   rm -rf /etc/ssl /usr/include /node-${VERSION} \
     /usr/share/man /tmp/* /root/.node-gyp
 
