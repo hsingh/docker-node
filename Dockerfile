@@ -1,19 +1,16 @@
-FROM alpine:3.1
+FROM progrium/busybox
 MAINTAINER Harpreet Singh <hs@hsingh.com>
-# Based on https://github.com/mhart/alpine-node
+# Based on https://github.com/hwestphal/docker-nodebox
 
-ENV VERSION=v0.10.38 CFLAGS="-D__USE_MISC"
+ENV VERSION v0.10.38
+ENV PATH /node-$VERSION-linux-x64/bin:$PATH
 
-RUN apk add --update curl make gcc g++ python paxctl libgcc libstdc++ && \
-  curl -sSL https://nodejs.org/dist/${VERSION}/node-${VERSION}.tar.gz | tar -xz && \
-  cd /node-${VERSION} && \
-  ./configure --prefix=/usr --without-npm && \
-  make -j$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
-  make install && \
-  paxctl -cm /usr/bin/node && \
-  cd / && \
-  apk del make gcc g++ python paxctl && \
-  rm -rf /etc/ssl /usr/include /node-${VERSION} \
-    /usr/share/man /tmp/* /root/.node-gyp
+RUN opkg-install curl ca-certificates libstdcpp && \
+  curl -sSL https://nodejs.org/dist/${VERSION}/node-${VERSION}-linux-x64.tar.gz | gunzip -c - | tar -xf - && \
+  opkg-cl remove ca-certificates && \
+  rm -rf /etc/ssl \
+         /usr/include \
+         /usr/share/man \
+         /root/.node-gyp \
 
 CMD ["sh"]
