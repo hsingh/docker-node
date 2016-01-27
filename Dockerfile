@@ -6,7 +6,7 @@ ENV VERSION v0.12.7
 ENV PATH /node-$VERSION-linux-x64/bin:$PATH
 
 RUN opkg-install curl ca-certificates libstdcpp && \
-  curl -sSL https://nodejs.org/dist/${VERSION}/node-${VERSION}-linux-x64.tar.gz | gunzip -c - | tar -xf - && \
+  curl -ksSL https://nodejs.org/dist/${VERSION}/node-${VERSION}-linux-x64.tar.gz | gunzip -c - | tar -xf - && \
   opkg-cl remove ca-certificates && \
   rm -rf /etc/ssl \
          /usr/include \
